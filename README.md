@@ -7,6 +7,7 @@ npm install
 npm start
 
 Available Endpoints
+
 Add:
 Must include payer, points, timestamp in request body
 Example: {"payer": "DANNON", "points": 300, "timestamp": "2020-10-31T10:00:00Z" }
