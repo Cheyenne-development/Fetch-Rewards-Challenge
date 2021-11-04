@@ -1,6 +1,5 @@
 const express = require("express");
 const store = require("./store");
-const inArray = require("./inArray")
 
 const pointsRoutes = express.Router();
 const bodyParser = express.json();
@@ -26,29 +25,37 @@ pointsRoutes
     .route('/spend')
     .patch(bodyParser, (req, res) => {
         let pointsToSpend  = req.body.points;
-        const spent = []
+        const spent = [];
+            let tmp = {};
        
         for(let i = 0;i< store.points.length;i++) {
            let { payer, points } = store.points[i];
             if(pointsToSpend === 0) break;
             if(pointsToSpend >= points) {
-                if(inArray(payer, points, spent)) {
-            } else {
-                points *= -1
-                spent.push({payer, points})
-            }
+                if(!tmp[payer]) {
+                    tmp[payer] = points * -1
+                } else {
+                    tmp[payer] -= points;
+                }
 
-                pointsToSpend -= store.points[i].points;
+                pointsToSpend -= points;
                 store.points[i].points = 0
             } else {
-                store.points[i].points -= pointsToSpend;
+                if(!tmp[payer]) {
+                    tmp[payer] = pointsToSpend * -1
+                } else {
+                    tmp[payer] -= pointsToSpend;
+                }
+                
+                
+            store.points[i].points -= pointsToSpend;
                 pointsToSpend = 0;
-                if(inArray(payer, points, spent)) {
-            } else {
-                points = (points - store.points[i].points) * -1
-                spent.push({payer, points})
-            }
         }
+    }
+
+    let keys = Object.keys(tmp)
+    for(let i = 0; i < keys.length; i++) {
+        spent.push({"payer": keys[i], "points": tmp[keys[i]]})
     }
 
         res.status(201).send(spent)
