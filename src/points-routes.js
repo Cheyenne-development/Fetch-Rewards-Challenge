@@ -58,7 +58,7 @@ pointsRoutes
         spent.push({"payer": keys[i], "points": tmp[keys[i]]})
     }
 
-        res.status(201).send(spent)
+        res.status(200).send(spent)
     })    
 
 pointsRoutes    
