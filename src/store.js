@@ -1,3 +1,5 @@
-const points = [];
+const points = [
+    
+];
 
 module.exports = { points }
