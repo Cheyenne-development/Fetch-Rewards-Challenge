@@ -5,6 +5,7 @@ const pointsRoutes = express.Router();
 const bodyParser = express.json();
 
 pointsRoutes
+// adds points from payers and displays aggregated results.
     .route('/points')
     
     .get((req, res) => {
@@ -25,7 +26,9 @@ pointsRoutes
     .route('/spend')
     .patch(bodyParser, (req, res) => {
         let pointsToSpend  = req.body.points;
+        // Finally result containing points spent from each payer
         const spent = [];
+        // rudimentary hash table to keep track of points from payer.
             let tmp = {};
        
         for(let i = 0;i< store.points.length;i++) {
@@ -52,7 +55,7 @@ pointsRoutes
                 pointsToSpend = 0;
         }
     }
-
+// iterates through tmp to provide output in desired format.
     let keys = Object.keys(tmp)
     for(let i = 0; i < keys.length; i++) {
         spent.push({"payer": keys[i], "points": tmp[keys[i]]})
@@ -61,7 +64,8 @@ pointsRoutes
         res.status(200).send(spent)
     })    
 
-pointsRoutes    
+pointsRoutes   
+// Adds points, sorting by timestamp upon insertion to make deletion in FIFO order easier
     .route("/add")
     .post(bodyParser, (req, res) => {
   const { payer, points, timestamp } = req.body;
