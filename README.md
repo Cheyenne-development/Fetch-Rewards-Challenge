@@ -1,7 +1,7 @@
 # Fetch-Rewards-Challenge
 Web service to add, spend, and view points.
 
-First and foremost have the latest LTS version node installed
+First and foremost have the latest LTS version node installed 
 
 Available at https://nodejs.org/en/download/
 
